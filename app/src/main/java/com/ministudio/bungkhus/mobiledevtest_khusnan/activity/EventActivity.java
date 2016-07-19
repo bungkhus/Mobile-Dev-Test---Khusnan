@@ -7,11 +7,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.ministudio.bungkhus.mobiledevtest_khusnan.R;
 import com.ministudio.bungkhus.mobiledevtest_khusnan.adapter.EventAdapter;
 import com.ministudio.bungkhus.mobiledevtest_khusnan.model.Event;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -48,16 +51,42 @@ public class EventActivity extends AppCompatActivity {
         EventAdapter adapter = new EventAdapter(EventActivity.this, data, new EventAdapter.OnItemClickListener() {
             @Override
             public void onClick(Event item) {
-                Intent i = new Intent(EventActivity.this, HomeActivity.class);
+                Intent i = new Intent();
                 i.putExtra("nama", nama);
                 i.putExtra("guest", guest);
                 i.putExtra("event", item.getNama());
-                startActivity(i);
-                overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+                setResult(RESULT_OK, i);
+
+                String pola = "MM";
+                Date date = item.getTanggal();
+                String tanggalStr = tampilkanTanggalDanWaktu(
+                        date, pola);
+                int tanggal = Integer.parseInt(tanggalStr);
+                String prime;
+                if(isPrime(tanggal)){
+                    prime = "isPrime";
+                }else{
+                    prime = "not prime";
+                }
+
+                System.out.println("TANGGAL = "+tanggal);
+                Toast.makeText(EventActivity.this, prime, Toast.LENGTH_LONG).show();
+
                 finish();
+                overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
             }
         });
         recyclerView.setAdapter(adapter);
+    }
+
+    public static String tampilkanTanggalDanWaktu(Date tanggalDanWaktu,
+                                                  String pola) {
+        String tanggalStr;
+        SimpleDateFormat formatter;
+        formatter = new SimpleDateFormat(pola);
+        tanggalStr = formatter.format(tanggalDanWaktu);
+
+        return tanggalStr;
     }
 
     private List<Event> getAllItemList(){
@@ -75,11 +104,12 @@ public class EventActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent i = new Intent(EventActivity.this, HomeActivity.class);
+        super.onBackPressed();
+        Intent i = new Intent();
         i.putExtra("nama", nama);
         i.putExtra("guest", guest);
         i.putExtra("event", event);
-        startActivity(i);
+        setResult(RESULT_OK, i);
         overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
         finish();
     }
@@ -99,6 +129,22 @@ public class EventActivity extends AppCompatActivity {
                 onBackPressed();
                 break;
         }
+        return true;
+    }
+
+    public static boolean isPrime(int num){
+        if ( num > 2 && num%2 == 0 ) {
+            System.out.println(num + " is not prime");
+            return false;
+        }
+        int top = (int)Math.sqrt(num) + 1;
+        for(int i = 3; i < top; i+=2){
+            if(num % i == 0){
+                System.out.println(num + " is not prime");
+                return false;
+            }
+        }
+        System.out.println(num + " is prime");
         return true;
     }
 }

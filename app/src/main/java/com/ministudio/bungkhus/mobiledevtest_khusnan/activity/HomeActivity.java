@@ -1,6 +1,8 @@
 package com.ministudio.bungkhus.mobiledevtest_khusnan.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -37,6 +39,30 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         if(guest != null){
             buttonGuest.setText(guest);
         }
+
+        if(isPalindrome(nama)){
+            showDialog(nama, "isPalindrome");
+        }else{
+            showDialog(nama, "not palindrome");
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK){
+                nama = data.getStringExtra("nama");
+                event = data.getStringExtra("event");
+                guest = data.getStringExtra("guest");
+                if(event != null){
+                    buttonEvent.setText(event);
+                }
+                if(guest != null){
+                    buttonGuest.setText(guest);
+                }
+            }
+        }
     }
 
     @Override
@@ -53,8 +79,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 i.putExtra("nama", nama);
                 i.putExtra("event", event);
                 i.putExtra("guest", guest);
-                startActivity(i);
-                finish();
+                startActivityForResult(i, 1);
                 break;
 
             case R.id.buttonGuest:
@@ -62,9 +87,44 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 in.putExtra("nama", nama);
                 in.putExtra("event", event);
                 in.putExtra("guest", guest);
-                startActivity(in);
-                finish();
+                startActivityForResult(in, 1);
                 break;
         }
+    }
+
+    private void showDialog(String title, String msg){
+        AlertDialog.Builder builder = new AlertDialog.Builder(
+                HomeActivity.this);
+        builder.setTitle(title);
+        builder.setMessage(msg);
+        builder.setNegativeButton("DISMISS",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,
+                                        int which) {
+                        //
+                    }
+                });
+        builder.show();
+    }
+
+    private boolean isPalindrome(String textCheck) {
+        int startPos = 0;
+        int endPos = textCheck.length() - 1;
+        boolean result = true;
+
+        while (endPos > startPos) {
+            char char_1 = Character.toLowerCase(textCheck.charAt(startPos));
+            char char_2 = Character.toLowerCase(textCheck.charAt(endPos));
+
+            if (char_1 != char_2) {
+                result = false;
+
+                break;
+            }
+
+            startPos++;
+            endPos--;
+        }
+        return result;
     }
 }

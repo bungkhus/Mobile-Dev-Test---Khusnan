@@ -65,13 +65,11 @@ public class GuestActivity extends AppCompatActivity {
         rcAdapter = new GuestAdapter(GuestActivity.this, rowListItem, new GuestAdapter.OnItemClickListener() {
             @Override
             public void onClick(Guest item) {
-                Intent i = new Intent(GuestActivity.this, HomeActivity.class);
+                Intent i = new Intent();
                 i.putExtra("nama", nama);
                 i.putExtra("event", event);
                 i.putExtra("guest", item.getNama());
-                startActivity(i);
-                overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
-                finish();
+                setResult(RESULT_OK, i);
 
                 String pola = "dd";
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -96,6 +94,8 @@ public class GuestActivity extends AppCompatActivity {
                 }
                 System.out.println("TANGGAL LAHIR = "+birthdate);
                 Toast.makeText(GuestActivity.this, phone, Toast.LENGTH_LONG).show();
+                overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+                finish();
 
             }
         });
@@ -167,11 +167,12 @@ public class GuestActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent i = new Intent(GuestActivity.this, HomeActivity.class);
+        super.onBackPressed();
+        Intent i = new Intent();
         i.putExtra("nama", nama);
         i.putExtra("event", event);
         i.putExtra("guest", guest);
-        startActivity(i);
+        setResult(RESULT_OK, i);
         overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
         finish();
     }
