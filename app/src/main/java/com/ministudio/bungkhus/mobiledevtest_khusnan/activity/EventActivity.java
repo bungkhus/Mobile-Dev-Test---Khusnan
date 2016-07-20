@@ -1,6 +1,8 @@
 package com.ministudio.bungkhus.mobiledevtest_khusnan.activity;
 
 import android.content.Intent;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,12 +20,15 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
-public class EventActivity extends AppCompatActivity {
+public class EventActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, EventAdapter.OnItemClickListener {
 
     private RecyclerView recyclerView;
     private List<Event> data;
     private String nama, guest, event;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private EventAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +40,7 @@ public class EventActivity extends AppCompatActivity {
         guest = getIntent().getStringExtra("guest");
         event = getIntent().getStringExtra("event");
 
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(EventActivity.this));
+        adapter = new EventAdapter(EventActivity.this);
 
         getSupportActionBar().setTitle("EVENT");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -45,37 +49,24 @@ public class EventActivity extends AppCompatActivity {
 
         data = getAllItemList();
         setRecyclerView();
+        setSwipeRefresh();
+        adapter.setListener(this);
+
+    }
+
+    public void setSwipeRefresh(){
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+        mSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
+                        android.R.color.holo_green_light,
+                        android.R.color.holo_orange_light,
+                        android.R.color.holo_red_light);
     }
 
     public void setRecyclerView() {
-        EventAdapter adapter = new EventAdapter(EventActivity.this, data, new EventAdapter.OnItemClickListener() {
-            @Override
-            public void onClick(Event item) {
-                Intent i = new Intent();
-                i.putExtra("nama", nama);
-                i.putExtra("guest", guest);
-                i.putExtra("event", item.getNama());
-                setResult(RESULT_OK, i);
-
-                String pola = "MM";
-                Date date = item.getTanggal();
-                String tanggalStr = tampilkanTanggalDanWaktu(
-                        date, pola);
-                int tanggal = Integer.parseInt(tanggalStr);
-                String prime;
-                if(isPrime(tanggal)){
-                    prime = "isPrime";
-                }else{
-                    prime = "not prime";
-                }
-
-                System.out.println("TANGGAL = "+tanggal);
-                Toast.makeText(EventActivity.this, prime, Toast.LENGTH_LONG).show();
-
-                finish();
-                overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
-            }
-        });
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(EventActivity.this));
+        adapter.setDetailList(data);
         recyclerView.setAdapter(adapter);
     }
 
@@ -100,6 +91,16 @@ public class EventActivity extends AppCompatActivity {
         allItems.add(new Event("Hunting Photo",  new Date(), R.drawable.photocamera));
 
         return allItems;
+    }
+
+    private List<Event> getNewItems() {
+        List<Event> newEvents = new ArrayList<>();
+        for (int i = 0; i < data.size(); i++) {
+            int randomCatNameIndex = new Random().nextInt(data.size() - 1);
+            newEvents.add(data.get(randomCatNameIndex));
+        }
+        mSwipeRefreshLayout.setRefreshing(false);
+        return newEvents;
     }
 
     @Override
@@ -146,5 +147,37 @@ public class EventActivity extends AppCompatActivity {
         }
         System.out.println(num + " is prime");
         return true;
+    }
+
+    @Override
+    public void onRefresh() {
+        adapter.setDetailList(getNewItems());
+    }
+
+    @Override
+    public void onClick(Event item) {
+        Intent i = new Intent();
+        i.putExtra("nama", nama);
+        i.putExtra("guest", guest);
+        i.putExtra("event", item.getNama());
+        setResult(RESULT_OK, i);
+
+        String pola = "MM";
+        Date date = item.getTanggal();
+        String tanggalStr = tampilkanTanggalDanWaktu(
+                date, pola);
+        int tanggal = Integer.parseInt(tanggalStr);
+        String prime;
+        if(isPrime(tanggal)){
+            prime = "isPrime";
+        }else{
+            prime = "not prime";
+        }
+
+        System.out.println("TANGGAL = "+tanggal);
+        Toast.makeText(EventActivity.this, prime, Toast.LENGTH_LONG).show();
+
+        finish();
+        overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
     }
 }

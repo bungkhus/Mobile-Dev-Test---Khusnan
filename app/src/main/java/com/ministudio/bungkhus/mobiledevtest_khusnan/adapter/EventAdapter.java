@@ -26,14 +26,33 @@ import java.util.Locale;
  */
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> {
 
-    private final OnItemClickListener listener;
+    private OnItemClickListener listener;
     private List<Event> detailList;
     private Context context;
 
-    public EventAdapter(Context context, List<Event> detailList, OnItemClickListener listener) {
-        this.detailList = detailList;
-        this.listener = listener;
+    public EventAdapter(Context context) {
         this.context = context;
+    }
+
+    public void setListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
+    public void setDetailList(List<Event> detailList) {
+        this.detailList = detailList;
+        notifyDataSetChanged();
+    }
+
+    // Clean all elements of the recycler
+    public void clear() {
+        detailList.clear();
+        notifyDataSetChanged();
+    }
+
+    // Add a list of items
+    public void addAll(List<Event> list) {
+        detailList.addAll(list);
+        notifyDataSetChanged();
     }
 
     @Override
