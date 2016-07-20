@@ -95,6 +95,21 @@ public class GuestActivity extends AppCompatActivity {
                 }
                 System.out.println("TANGGAL LAHIR = "+birthdate);
                 Toast.makeText(GuestActivity.this, phone, Toast.LENGTH_LONG).show();
+
+                String bulan = "MM";
+                String bulanStr = tampilkanTanggalDanWaktu(
+                        date, bulan);
+                int bulanInt = Integer.parseInt(bulanStr);
+                String prime;
+                if(isPrime(bulanInt)){
+                    prime = "isPrime";
+                }else{
+                    prime = "not prime";
+                }
+
+                System.out.println("TANGGAL = "+bulanInt);
+                Toast.makeText(GuestActivity.this, prime, Toast.LENGTH_LONG).show();
+
                 overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
                 finish();
 
@@ -193,6 +208,22 @@ public class GuestActivity extends AppCompatActivity {
                 onBackPressed();
                 break;
         }
+        return true;
+    }
+
+    public static boolean isPrime(int num){
+        if ( num > 2 && num%2 == 0 ) {
+            System.out.println(num + " is not prime");
+            return false;
+        }
+        int top = (int)Math.sqrt(num) + 1;
+        for(int i = 3; i < top; i+=2){
+            if(num % i == 0){
+                System.out.println(num + " is not prime");
+                return false;
+            }
+        }
+        System.out.println(num + " is prime");
         return true;
     }
 

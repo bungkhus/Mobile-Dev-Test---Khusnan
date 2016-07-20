@@ -166,22 +166,6 @@ public class EventActivity extends AppCompatActivity implements SwipeRefreshLayo
         return true;
     }
 
-    public static boolean isPrime(int num){
-        if ( num > 2 && num%2 == 0 ) {
-            System.out.println(num + " is not prime");
-            return false;
-        }
-        int top = (int)Math.sqrt(num) + 1;
-        for(int i = 3; i < top; i+=2){
-            if(num % i == 0){
-                System.out.println(num + " is not prime");
-                return false;
-            }
-        }
-        System.out.println(num + " is prime");
-        return true;
-    }
-
     @Override
     public void onRefresh() {
         adapter.setDetailList(getNewItems());
@@ -194,21 +178,6 @@ public class EventActivity extends AppCompatActivity implements SwipeRefreshLayo
         i.putExtra("guest", guest);
         i.putExtra("event", item.getNama());
         setResult(RESULT_OK, i);
-
-        String pola = "MM";
-        Date date = item.getTanggal();
-        String tanggalStr = tampilkanTanggalDanWaktu(
-                date, pola);
-        int tanggal = Integer.parseInt(tanggalStr);
-        String prime;
-        if(isPrime(tanggal)){
-            prime = "isPrime";
-        }else{
-            prime = "not prime";
-        }
-
-        System.out.println("TANGGAL = "+tanggal);
-        Toast.makeText(EventActivity.this, prime, Toast.LENGTH_LONG).show();
 
         finish();
         overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
