@@ -7,12 +7,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/bg_validation"
     tools:context=".activity.LoginActivity">
-
-    <ImageView
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:src="@drawable/logo"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,25 +16,64 @@
         android:orientation="vertical"
         android:gravity="center_vertical">
 
-        <me.zhanghai.android.materialedittext.MaterialEditText
+        <TextView
+            android:textSize="15dp"
+            android:textColor="@color/white"
+            android:fontFamily="sans-serif"
+            android:textStyle="bold"
+            android:text="Selamat Datang!"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/item_vertical_margin"/>
+
+        <TextView
+            android:layout_marginBottom="@dimen/item_vertical_margin"
+            android:textSize="15dp"
+            android:textColor="@color/white"
+            android:fontFamily="sans-serif"
+            android:text="Sertakan gambar profil Anda untuk melengkapi profil"
+            android:gravity="center"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:layout_marginBottom="@dimen/item_vertical_margin"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@drawable/round_button"
+            android:layout_gravity="center_horizontal" />
+
+        <EditText
+            android:layout_marginBottom="@dimen/item_vertical_margin"
             android:id="@+id/editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="left|center"
-            android:hint="NAMA"
-            android:textColor="@color/colorAccent"
-            android:textColorHint="@color/secondary_text"
-            android:textSize="15dp" />
+            android:hint="Nama"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:textSize="15dp"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
+            android:background="@drawable/text_field"/>
 
         <Button
+            android:layout_marginBottom="@dimen/item_vertical_margin"
             android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:background="@color/colorPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/button_bg"
             android:text="@string/masuk"
             android:textColor="@color/white"
-            android:textSize="15dp" />
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:textAllCaps="false"/>
 
     </LinearLayout>
 

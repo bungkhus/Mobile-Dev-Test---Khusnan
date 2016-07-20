@@ -46,7 +46,7 @@ public class EventActivity extends AppCompatActivity implements SwipeRefreshLayo
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setElevation(3);
-
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.left_sircle);
         data = getAllItemList();
         setRecyclerView();
         setSwipeRefresh();

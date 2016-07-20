@@ -54,6 +54,7 @@ public class GuestActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setElevation(3);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.left_sircle);
 
         List<Guest> rowListItem = getAllItemList();
         lLayout = new GridLayoutManager(GuestActivity.this, 3);
