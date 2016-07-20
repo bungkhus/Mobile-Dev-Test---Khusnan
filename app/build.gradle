@@ -29,7 +29,6 @@ dependencies {
     compile "com.android.support:appcompat-v7:$supportVersion"
     compile "com.android.support:cardview-v7:$supportVersion"
     compile "com.android.support:recyclerview-v7:$supportVersion"
-    compile 'me.zhanghai.android.materialedittext:library:1.0.0'
     compile 'com.mcxiaoke.volley:library:1.0.19'
     compile 'com.github.d-max:spots-dialog:0.4@aar'
 }

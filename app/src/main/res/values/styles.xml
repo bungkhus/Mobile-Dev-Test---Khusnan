@@ -32,8 +32,6 @@
 
     <style name="MyTheme.ActionBar.TitleTextStyle" parent="@android:style/TextAppearance">
         <item name="android:textColor">@color/four_round</item>
-        <item name="android:textSize">15sp</item>
-        <item name="android:textStyle">bold</item>
     </style>
 
 </resources>

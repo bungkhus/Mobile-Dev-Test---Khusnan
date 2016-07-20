@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -83,12 +84,31 @@ public class EventActivity extends AppCompatActivity implements SwipeRefreshLayo
     private List<Event> getAllItemList(){
 
         List<Event> allItems = new ArrayList<Event>();
-        allItems.add(new Event("Party", new Date(), R.drawable.balloons));
-        allItems.add(new Event("Dinner",  new Date(), R.drawable.dinner));
-        allItems.add(new Event("Playing Game",  new Date(), R.drawable.gamepad));
-        allItems.add(new Event("Birthday",  new Date(), R.drawable.gift));
-        allItems.add(new Event("Karaoke",  new Date(), R.drawable.karaoke));
-        allItems.add(new Event("Hunting Photo",  new Date(), R.drawable.photocamera));
+
+        allItems.add(new Event("Party", getResources().getString(R.string.material), new Date(), R.drawable.balloons, new ArrayList<String>() {{
+            add("hollyday");
+            add("party");
+        }}));
+        allItems.add(new Event("Dinner", getResources().getString(R.string.material),  new Date(), R.drawable.dinner, new ArrayList<String>() {{
+            add("anniversary");
+            add("dinner");
+            add("love");
+        }}));
+        allItems.add(new Event("Playing Game", getResources().getString(R.string.material),  new Date(), R.drawable.gamepad, new ArrayList<String>() {{
+            add("refresshing");
+        }}));
+        allItems.add(new Event("Birthday", getResources().getString(R.string.material),  new Date(), R.drawable.gift, new ArrayList<String>() {{
+            add("party");
+            add("happy");
+        }}));
+        allItems.add(new Event("Karaoke", getResources().getString(R.string.material),  new Date(), R.drawable.karaoke, new ArrayList<String>() {{
+            add("happy");
+            add("song");
+        }}));
+        allItems.add(new Event("Hunting Photo", getResources().getString(R.string.material),  new Date(), R.drawable.photocamera, new ArrayList<String>() {{
+            add("hollyday");
+            add("vacation");
+        }}));
 
         return allItems;
     }
@@ -96,6 +116,7 @@ public class EventActivity extends AppCompatActivity implements SwipeRefreshLayo
     private List<Event> getNewItems() {
         List<Event> newEvents = new ArrayList<>();
         for (int i = 0; i < data.size(); i++) {
+            data.get(i).getTag().clear();
             int randomCatNameIndex = new Random().nextInt(data.size() - 1);
             newEvents.add(data.get(randomCatNameIndex));
         }
@@ -117,6 +138,8 @@ public class EventActivity extends AppCompatActivity implements SwipeRefreshLayo
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_event, menu);
         return true;
     }
 

@@ -1,7 +1,9 @@
 package com.ministudio.bungkhus.mobiledevtest_khusnan.adapter;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ministudio.bungkhus.mobiledevtest_khusnan.R;
@@ -49,12 +52,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         notifyDataSetChanged();
     }
 
-    // Add a list of items
-    public void addAll(List<Event> list) {
-        detailList.addAll(list);
-        notifyDataSetChanged();
-    }
-
     @Override
     public EventAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_list_item_event, null);
@@ -62,11 +59,12 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         return vh;
     }
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
     public void onBindViewHolder(EventAdapter.ViewHolder holder, int position) {
         holder.click(detailList.get(position), listener);
 
-        String pola = "dd MMM yyyy";
+        String pola = "MMM dd yyyy";
         Date date = detailList.get(position).getTanggal();
         String tanggalStr = tampilkanTanggalDanWaktu(
                 date, pola);
@@ -75,6 +73,27 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         holder.textLabelEmail.setImageDrawable(ContextCompat.getDrawable(context,detailList.get(position).getPhoto()));
         holder.textTitleEmail.setText(detailList.get(position).getNama());
         holder.textMessageEmail.setText(tanggalStr);
+        holder.tvDesc.setText(detailList.get(position).getDesc());
+
+        final int N = detailList.get(position).getTag().size();
+        final TextView[] myTextViews = new TextView[N];
+        for (int i = 0; i < N; i++) {
+            final TextView rowTextView = new TextView(context);
+
+            rowTextView.setText("#" + detailList.get(position).getTag().get(i));
+            rowTextView.setTextColor(context.getResources().getColor(R.color.white));
+            rowTextView.setTextSize(10);
+            rowTextView.setPadding(3,3,3,3);
+            rowTextView.setBackgroundColor(context.getResources().getColor(R.color.tag));
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            params.setMargins(0,0,3, 0);
+            rowTextView.setLayoutParams(params);
+
+            holder.tag_view.addView(rowTextView);
+
+            myTextViews[i] = rowTextView;
+        }
     }
 
     @Override
@@ -108,12 +127,16 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         ImageView textLabelEmail;
         TextView textTitleEmail;
         TextView textMessageEmail;
+        TextView tvDesc;
+        LinearLayout tag_view;
 
         public ViewHolder(View itemView) {
             super(itemView);
             textLabelEmail = (ImageView) itemView.findViewById(R.id.text_label_email);
             textTitleEmail = (TextView) itemView.findViewById(R.id.text_title_email);
             textMessageEmail = (TextView) itemView.findViewById(R.id.text_message_email);
+            tvDesc = (TextView) itemView.findViewById(R.id.desc);
+            tag_view = (LinearLayout) itemView.findViewById(R.id.tag_view);
         }
 
         public void click(final Event rumpun, final OnItemClickListener listener) {
