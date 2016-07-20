@@ -212,7 +212,7 @@ public class GuestActivity extends AppCompatActivity {
     }
 
     public static boolean isPrime(int num){
-        if ( num > 2 && num%2 == 0 ) {
+        if ( num == 1 || (num > 2 && num%2 == 0) ) {
             System.out.println(num + " is not prime");
             return false;
         }
