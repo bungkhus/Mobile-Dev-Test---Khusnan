@@ -114,13 +114,23 @@ public class EventActivity extends AppCompatActivity implements SwipeRefreshLayo
     }
 
     private List<Event> getNewItems() {
-        List<Event> newEvents = new ArrayList<>();
+        final List<Event> newEvents = new ArrayList<>();
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable(){
+            @Override
+            public void run(){
+                //
+                System.out.println("detik");
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        }, 2000);
+
         for (int i = 0; i < data.size(); i++) {
             data.get(i).getTag().clear();
             int randomCatNameIndex = new Random().nextInt(data.size() - 1);
             newEvents.add(data.get(randomCatNameIndex));
         }
-        mSwipeRefreshLayout.setRefreshing(false);
         return newEvents;
     }
 
